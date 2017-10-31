@@ -1,0 +1,4 @@
+scripts/tests.sh: line 163: ./step_world_v2_function: No such file or directory
+Exception : LoadWorld : File does not start with HPCEHeatWorldV0.
+Loaded world with w=256, h=256
+Stepping by dt=0.1 for n=1

@@ -1,0 +1,73 @@
+
+Cloning into 'hpce-2017-cw3-aes414'...
+commit f56ce583e229b11b4a6f224bce03ab963d13ba88
+Author: m8pple <dt10@imperial.ac.uk>
+Date:   Fri Oct 27 13:46:24 2017 +0100
+
+    Fix off-by-one in date. Thanks to @fyquah95. Closes #47.
+aes414, 0, Have src/aes414/step_world_v1_lambda.cpp, FAIL
+aes414, 1, Have src/aes414/step_world_v1_lambda.cpp, FAIL
+aes414, 2, Have src/aes414/step_world_v2_function.cpp, FAIL
+aes414, 3, Have src/aes414/step_world_v3_opencl.cpp, FAIL
+aes414, 4, Have src/aes414/step_world_v3_kernel.cl, FAIL
+aes414, 5, Have src/aes414/step_world_v4_double_buffered.cpp, FAIL
+aes414, 6, Have src/aes414/step_world_v5_packed_properties.cpp, FAIL
+aes414, 7, Have src/aes414/step_world_v5_kernel.cl or src/aes414/step_world_v5_packed_properties.cl, FAIL
+0
+(cd ./tmp/aes414/working && g++ -std=c++14 -O3 -W -Wall -g -I include -I /home/admin/hpce-2017-private/scripts/cw3/scripts/include /home/admin/hpce-2017-private/scripts/cw3/scripts/src/heat.cpp src/aes414/step_world_v1_lambda.cpp -o step_world_v1_lambda) &> ./tmp/aes414/log/build_v1_lambda.log
+aes414, 8, [exists_V1_CPP=0] Compiling step_world_v1_lambda.cpp, FAIL
+aes414, 9, [exists_V2_CPP=0] Compiling step_world_v2_function.cpp, FAIL
+(cd $WORKING_DIR && $PREPROC src/$SL/step_world_v3_opencl.cpp -o - | $SCRIPTS_DIR/extract_preprocessed_part.pl src/$SL/step_world_v3_opencl.cpp | grep enqueueNDRangeKernel - )
+g++: error: src/aes414/step_world_v3_opencl.cpp: No such file or directory
+g++: fatal error: no input files
+compilation terminated.
+aes414, 10, Checking step_world_v3_opencl actually enqueues a kernel., FAIL
+aes414, 11, [exists_V3_CPP=0] Compiling step_world_v3_opencl.cpp, FAIL
+(cd $WORKING_DIR && $PREPROC src/$SL/step_world_v4_double_buffered.cpp -o - | $SCRIPTS_DIR/extract_preprocessed_part.pl src/$SL/step_world_v4_double_buffered.cpp | grep enqueueBarrier - )
+g++: error: src/aes414/step_world_v4_double_buffered.cpp: No such file or directory
+g++: fatal error: no input files
+compilation terminated.
+aes414, 12, Checking step_world_v4_double_buffered uses a barrier., FAIL
+aes414, 13, [exists_V4_CPP=0] Compiling step_world_v4_double_buffered.cpp, FAIL
+aes414, 14, [exists_V5_CPP=0] Compiling step_world_v5_packed_properties.cpp, FAIL
+Loaded world with w=256, h=256
+Stepping by dt=0.1 for n=1
+(cd ./tmp/aes414/working && (cat test_15.input | ./step_world_v1_lambda > test_15.got) && (cat test_15.got | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds test_15.ref) ) &> ./tmp/aes414/log/test_15.log
+aes414, 15, Check output of step_world_v1_lambda for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 256 256 | ./step_world_v1_lambda | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 256 256 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world)) &> ./tmp/aes414/log/test_16.log
+aes414, 16, Check output of step_world_v1_lambda for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 100 200 | ./step_world_v1_lambda 0.5 4 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 100 200 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world 0.5 4)) &> ./tmp/aes414/log/test_17.log
+aes414, 17, Check output of step_world_v1_lambda for four time steps versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 256 256 | ./step_world_v2_function | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 256 256 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world)) &> ./tmp/aes414/log/test_18.log
+aes414, 18, Check output of step_world_v2_function for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 100 200 | ./step_world_v2_function 0.5 4 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 100 200 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world 0.5 4)) &> ./tmp/aes414/log/test_19.log
+aes414, 19, Check output of step_world_v2_function for four time steps versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | ./step_world_v3_opencl | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world )) &> ./tmp/aes414/log/test_20.log
+aes414, 20, Check output of step_world_v3_opencl for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 300 60 | ./step_world_v3_opencl 0.2 8 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 300 60 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world 0.2 8 )) &> ./tmp/aes414/log/test_21.log
+aes414, 21, Check output of step_world_v3_opencl for eight time steps versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | ./step_world_v4_double_buffered | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world )) &> ./tmp/aes414/log/test_22.log
+aes414, 22, Check output of step_world_v4_double_buffered for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 300 60 | ./step_world_v4_double_buffered 0.3 8 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 300 60 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world 0.3 8 )) &> ./tmp/aes414/log/test_23.log
+aes414, 23, Check output of step_world_v4_double_buffered for eight time steps versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | ./step_world_v5_packed_properties | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 64 64 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world )) &> ./tmp/aes414/log/test_24.log
+aes414, 24, Check output of step_world_v5_packed_properties for one time step versus reference., FAIL
+(cd ./tmp/aes414/working && /home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 50 90 | ./step_world_v5_packed_properties 0.4 10 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/compare_worlds <(/home/admin/hpce-2017-private/scripts/cw3/scripts/src/make_world 50 90 | /home/admin/hpce-2017-private/scripts/cw3/scripts/src/step_world 0.4 10 )) &> ./tmp/aes414/log/test_25.log
+aes414, 25, Check output of step_world_v5_packed_properties for ten time steps versus reference., FAIL
+/usr/bin/time: cannot run ./step_world_v3_opencl: No such file or directory
+/usr/bin/time: cannot run ./step_world_v4_double_buffered: No such file or directory
+/usr/bin/time: cannot run ./step_world_v5_packed_properties: No such file or directory
+true
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+aes414, 26, For n=256, steps=2048: Check time for v3 (Command exited with non-zero status 127 0.00) is more than 1.2 x v4 (Command exited with non-zero status 127 0.00), FAIL
+true
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+aes414, 27, For n=256, steps=2048: Check time for v4 (Command exited with non-zero status 127 0.00) is more than 1.01 (updated) x v5 (Command exited with non-zero status 127 0.00), FAIL
+
+Passed 0 out of 28 tests.
