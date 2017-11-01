@@ -1,0 +1,14 @@
+Loaded world with w=300, h=300
+Stepping by dt=0.3 for n=8
+Loaded world with w=300, h=300
+Stepping by dt=0.3 for n=8
+Found 2 platforms
+  Platform 0 : NVIDIA Corporation
+  Platform 1 : Advanced Micro Devices, Inc.
+Choosing platform 0
+Found 1 devices
+  Device 0 : GRID K520
+Choosing device 0
+Loaded world under test from stdin with w=300, h=300
+Loaded expected world from file '/dev/fd/63' with w=300, h=300
+Success: No errors found.

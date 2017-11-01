@@ -1,0 +1,14 @@
+Loaded world with w=50, h=50
+Stepping by dt=0.4 for n=10
+Loaded world with w=50, h=50
+Stepping by dt=0.4 for n=10
+Found 2 platforms
+  Platform 0 : NVIDIA Corporation
+  Platform 1 : Advanced Micro Devices, Inc.
+Choosing platform 0
+Found 1 devices
+  Device 0 : GRID K520
+Choosing device 0
+Loaded world under test from stdin with w=50, h=50
+Loaded expected world from file '/dev/fd/63' with w=50, h=50
+Success: No errors found.
