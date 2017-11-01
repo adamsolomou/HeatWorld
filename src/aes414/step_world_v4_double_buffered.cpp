@@ -200,7 +200,7 @@ void StepWorldV4DoubleBuffered(world_t &world, float dt, unsigned n)
 		world.t += dt; // We have moved the world forwards in time	
 	}
 	//Copying the results back 
-	queue.enqueueReadBuffer(buffBuffer, CL_TRUE, 0, cbBuffer, &world.state[0]); //read buffState into output 
+	queue.enqueueReadBuffer(buffState, CL_TRUE, 0, cbBuffer, &world.state[0]); //read buffState into output 
 }
 
 }; //namespace aes414

@@ -132,8 +132,7 @@ void StepWorldV3OpenCL(world_t &world, float dt, unsigned n)
 	std::cerr<<"Choosing device "<<selectedDevice<<"\n";
 	cl::Device device=devices.at(selectedDevice);
 
-	//Creating a contxext
-	//A context represents a domain which we can create and use kernels and memory buffers 
+	//Creating a contxext: represents a domain which we can create and use kernels and memory buffers 
 	cl::Context context(devices);
 
 	std::string kernelSource=LoadSource("step_world_v3_kernel.cl");
@@ -157,7 +156,7 @@ void StepWorldV3OpenCL(world_t &world, float dt, unsigned n)
 	cl::Buffer buffState(context, CL_MEM_READ_ONLY, cbBuffer);
 	cl::Buffer buffBuffer(context, CL_MEM_WRITE_ONLY, cbBuffer);
 
-	cl::Kernel kernel(program, "kernel_xy");
+	cl::Kernel kernel(program, "kernel_xy"); //create an instant of the kernel 
 
 	unsigned w=world.w, h=world.h;
 	

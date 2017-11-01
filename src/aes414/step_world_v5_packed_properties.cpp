@@ -157,7 +157,7 @@ void StepWorldV5PackedProperties(world_t &world, float dt, unsigned n)
 	}
 
 	size_t cbBuffer=4*world.w*world.h;
-	cl::Buffer buffPacked(context, CL_MEM_READ_ONLY, cbBuffer);
+	cl::Buffer buffProperties(context, CL_MEM_READ_ONLY, cbBuffer);
 	cl::Buffer buffState(context, CL_MEM_READ_WRITE, cbBuffer);
 	cl::Buffer buffBuffer(context, CL_MEM_READ_WRITE, cbBuffer);
 
@@ -165,17 +165,12 @@ void StepWorldV5PackedProperties(world_t &world, float dt, unsigned n)
 	cl::Kernel kernel(program, "kernel_xy");
 
 	//Setting kernel parameters
-	kernel.setArg(1, buffPacked); 
+	kernel.setArg(1, buffProperties); 
 	kernel.setArg(3, outer); 
 	kernel.setArg(4, inner); 
 
 	//Create a command queue
 	cl::CommandQueue queue(context, device);
-
-	//Executing the kernel 
-	cl::NDRange offset(0, 0);	  	// Always start iterations at x=0, y=0
-	cl::NDRange globalSize(w, h);	// Global size must match the original loops
-	cl::NDRange localSize=cl::NullRange;	// We don't care about local size - determines clustering of threads into local work-groups 
 
 	std::vector<uint32_t> packed(w*h, 0); 
 
@@ -186,27 +181,27 @@ void StepWorldV5PackedProperties(world_t &world, float dt, unsigned n)
 
 			if(!( (world.properties[index] & Cell_Fixed) || (world.properties[index] & Cell_Insulator) ) ){
 				//Cell above
-				if(! (packed[index-w] & Cell_Insulator) ){
-					packed[index] = packed[index] + 4;
+				if( (world.properties[index-w] & Cell_Insulator) ){
+					packed[index] += 4;
 				}
 				//Cell bellow 
-				if(! (packed[index+w] & Cell_Insulator) ){
-					packed[index] = packed[index] + 8; 
+				if( (world.properties[index+w] & Cell_Insulator) ){
+					packed[index] += 8; 
 				}
 				//Cell left 
-				if(! (packed[index-1] & Cell_Insulator) ){
-					packed[index] = packed[index] + 16;
+				if( (world.properties[index-1] & Cell_Insulator) ){
+					packed[index] += 16;
 				}
 				//Cell right
-				if(! (packed[index+1] & Cell_Insulator) ){
-					packed[index] = packed[index] + 32;
+				if( (world.properties[index+1] & Cell_Insulator) ){
+					packed[index] += 32;
 				}
 			}
 		}
 	}
 
 	//Copy over fixed data to GPU 
-	queue.enqueueWriteBuffer(buffPacked, CL_TRUE, 0, cbBuffer, &packed[0]); //write properties data to buffProperties 
+	queue.enqueueWriteBuffer(buffProperties, CL_TRUE, 0, cbBuffer, &packed[0]); //write properties data to buffProperties 
 	
 	// This is our temporary working space
 	std::vector<float> buffer(w*h);
@@ -215,6 +210,11 @@ void StepWorldV5PackedProperties(world_t &world, float dt, unsigned n)
 	queue.enqueueWriteBuffer(buffState, CL_TRUE, 0, cbBuffer, &world.state[0], NULL); //write initial state to buffState 
 
 	for(unsigned t=0;t<n;t++){
+		//Executing the kernel 
+		cl::NDRange offset(0, 0);	  	// Always start iterations at x=0, y=0
+		cl::NDRange globalSize(w, h);	// Global size must match the original loops
+		cl::NDRange localSize=cl::NullRange;	// We don't care about local size - determines clustering of threads into local work-groups 
+
 		kernel.setArg(0, buffState); 
 		kernel.setArg(2, buffBuffer); 
 		queue.enqueueNDRangeKernel(kernel, offset, globalSize, localSize);
@@ -227,7 +227,7 @@ void StepWorldV5PackedProperties(world_t &world, float dt, unsigned n)
 		world.t += dt; // We have moved the world forwards in time	
 	}
 	//Copying the results back 
-	queue.enqueueReadBuffer(buffBuffer, CL_TRUE, 0, cbBuffer, &world.state[0]); //read buffState into output 
+	queue.enqueueReadBuffer(buffState, CL_TRUE, 0, cbBuffer, &world.state[0]); //read buffState into output 
 }
 
 }; //namespace aes414
