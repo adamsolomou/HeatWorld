@@ -1,0 +1,7 @@
+Loaded world with w=100, h=100
+Stepping by dt=0.5 for n=4
+Loaded world with w=100, h=100
+Stepping by dt=0.5 for n=4
+Loaded world under test from stdin with w=100, h=100
+Loaded expected world from file '/dev/fd/63' with w=100, h=100
+Success: No errors found.
