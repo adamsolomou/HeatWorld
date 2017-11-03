@@ -1,0 +1,7 @@
+Loaded world with w=256, h=256
+Stepping by dt=0.1 for n=1
+Loaded world with w=256, h=256
+Stepping by dt=0.1 for n=1
+Loaded world under test from stdin with w=256, h=256
+Loaded expected world from file '/dev/fd/63' with w=256, h=256
+Success: No errors found.
