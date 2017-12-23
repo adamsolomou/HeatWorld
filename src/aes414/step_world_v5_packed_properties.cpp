@@ -12,6 +12,7 @@
 
 #define __CL_ENABLE_EXCEPTIONS 
 #include "CL/cl.hpp"
+#include "tbb/parallel_for.h"
 
 namespace hpce{
 
