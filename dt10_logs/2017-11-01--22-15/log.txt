@@ -1,0 +1,31 @@
+
+aes414, 0, Have src/aes414/step_world_v1_lambda.cpp, PASS
+aes414, 1, Have src/aes414/step_world_v1_lambda.cpp, PASS
+aes414, 2, Have src/aes414/step_world_v2_function.cpp, PASS
+aes414, 3, Have src/aes414/step_world_v3_opencl.cpp, PASS
+aes414, 4, Have src/aes414/step_world_v3_kernel.cl, PASS
+aes414, 5, Have src/aes414/step_world_v4_double_buffered.cpp, PASS
+aes414, 6, Have src/aes414/step_world_v5_packed_properties.cpp, PASS
+aes414, 7, Have src/aes414/step_world_v5_packed_properties.cl, PASS
+aes414, 8, Compiling step_world_v1_lambda.cpp, PASS
+aes414, 9, Compiling step_world_v2_function.cpp, PASS
+aes414, 10, Checking step_world_v3_opencl actually enqueues a kernel., PASS
+aes414, 11, Compiling step_world_v3_opencl.cpp, PASS
+aes414, 12, Checking step_world_v4_double_buffered uses a barrier., PASS
+aes414, 13, Compiling step_world_v4_double_buffered.cpp, PASS
+aes414, 14, Compiling step_world_v5_packed_properties.cpp, PASS
+aes414, 15, Check output of step_world_v1_lambda for one time step versus reference., PASS
+aes414, 16, Check output of step_world_v1_lambda for one time step versus reference., PASS
+aes414, 17, Check output of step_world_v1_lambda for four time steps versus reference., PASS
+aes414, 18, Check output of step_world_v2_function for one time step versus reference., PASS
+aes414, 19, Check output of step_world_v2_function for four time steps versus reference., PASS
+aes414, 20, Check output of step_world_v3_opencl for one time step versus reference., PASS
+aes414, 21, Check output of step_world_v3_opencl for eight time steps versus reference., PASS
+aes414, 22, Check output of step_world_v4_double_buffered for one time step versus reference., PASS
+aes414, 23, Check output of step_world_v4_double_buffered for eight time steps versus reference., PASS
+aes414, 24, Check output of step_world_v5_packed_properties for one time step versus reference., PASS
+aes414, 25, Check output of step_world_v5_packed_properties for ten time steps versus reference., PASS
+aes414, 26, For n=256, steps=2048: Check time for v3 (0.80) is more than 1.2 x v4 (0.39), PASS
+aes414, 27, For n=256, steps=2048: Check time for v4 (0.39) is more than 1.01 (updated) x v5 (0.38), PASS
+
+Passed 28 out of 28 tests.
